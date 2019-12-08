@@ -84,7 +84,7 @@ public class ContactController {
 	}
 	
 	@RequestMapping(path ="/getContactByFirstNameAndLastName/{fName}/{lName}")
-	public Map<String,Object> getContactListByName(@PathVariable("fName") String fName,@PathVariable("fName") String lName){
+	public Map<String,Object> getContactListByName(@PathVariable("fName") String fName,@PathVariable("lName") String lName){
 		log.info("Hi !! I am in getContactByFirstNameAndLastName controller");
 		Map<String,Object> map = new HashMap<String,Object>();
 		List<Contact> contactList = new ArrayList<Contact>();
