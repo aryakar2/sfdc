@@ -85,13 +85,15 @@ public class ContactController {
 	}
 	
 	@RequestMapping(path ="/getContactByFirstNameAndLastName/{fName}/{lName}")
-	public Map<String,Object> getContactListByName(@PathVariable("fName") String fName,@PathVariable("lName") String lName){
+	public Map<String,Object> getContactByFirstNameAndLastName(@PathVariable("fName") String fName,@PathVariable("lName") String lName){
 		log.info("Hi !! I am in getContactByFirstNameAndLastName controller");
 		Map<String,Object> map = new HashMap<String,Object>();
 		List<ContactDTO> contactList = new ArrayList<ContactDTO>();
 		try {
-			contactList=contactService.getContactByName(fName,lName);
-		}catch(Exception e) {
+			contactList=contactService.getContactByName(fName,lName);			
+		}catch(Exception e) {			
+			log.info("Hi !! I am in getContactByFirstNameAndLastName controller exception");
+			e.printStackTrace();
 			Status status = new Status();
 			status.setCode(ApplicationConstants.STATUS.FAIL);
 			status.setMessages(errorBuilder(ApplicationConstants.ERRORCODE.TECHERROR));	
@@ -173,8 +175,22 @@ public class ContactController {
 	private List<Message> errorBuilder (String errorCode) {
 		Message message = new Message();
 		List<Message> listOfMessage = new ArrayList<Message>();
+		String errorDesc = "";
+			/*switch (errorCode) {
+			case ApplicationConstants.ERRORCODE.NOUSER :
+				errorDesc=ApplicationConstants.ERRORDESCRIPTION.NOUSER_DESCRIPTION;
+			case ApplicationConstants.ERRORCODE.TECHERROR :
+				errorDesc = ApplicationConstants.ERRORDESCRIPTION.TECHERROR_DESCRIPTION;
+			}*/
+		
+		if (errorCode.equalsIgnoreCase(ApplicationConstants.ERRORCODE.NOUSER))
+			errorDesc=ApplicationConstants.ERRORDESCRIPTION.NOUSER_DESCRIPTION;
+		if (errorCode.equalsIgnoreCase(ApplicationConstants.ERRORCODE.TECHERROR))
+			errorDesc=ApplicationConstants.ERRORDESCRIPTION.TECHERROR_DESCRIPTION;
+		
+		log.info("errorDesc "+errorDesc);
 		message.setCode(errorCode);
-		message.setDescription(errorCode+"_DESCRIPTION");
+		message.setDescription(errorDesc);
 		message.setType(ApplicationConstants.STATUS.FAIL);
 		listOfMessage.add(message);
 		return listOfMessage;

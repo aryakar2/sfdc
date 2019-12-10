@@ -3,6 +3,7 @@
  */
 package com.sfdc.contingency.sfdc.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,10 @@ public class ContactServiceImpl implements ContactService{
 		// TODO Auto-generated method stub				
 		log.info("firstName "+ firstName);
 		log.info("lastName "+ lastName);
-		return contactDao.findByFirstNameAndLastName(firstName,lastName);		
+		List<ContactDTO> list = new ArrayList<ContactDTO>();
+		list = contactDao.findByFirstNameAndLastName(firstName,lastName);
+		log.info("list size is "+list.size());
+		return list;
 	}
 
 	@Override

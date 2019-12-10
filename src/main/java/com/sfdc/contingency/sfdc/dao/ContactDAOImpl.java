@@ -8,16 +8,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import org.hibernate.loader.plan.exec.query.spi.NamedParameterContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.sfdc.contingency.sfdc.dto.ContactDTO;
 import com.sfdc.contingency.sfdc.entity.Contact;
 import com.sfdc.contingency.sfdc.utils.SQLRepository;
+
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;  
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,10 +33,10 @@ import lombok.extern.slf4j.Slf4j;
 public class ContactDAOImpl implements ContactDAO {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate namedJdbcTemplate;
 	    
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+    public void setJdbcTemplate(NamedParameterJdbcTemplate namedJdbcTemplate) {
+		this.namedJdbcTemplate = namedJdbcTemplate;
 	}
 	
 	@Override
@@ -47,21 +50,26 @@ public class ContactDAOImpl implements ContactDAO {
 		// TODO Auto-generated method stub
 		Boolean validZip = false;
         
-        String query = SQLRepository.GET_CONTACT_BY_FIRST_NAME_AND_LAST_NAME;
+        
         List<ContactDTO> listcontactDTO = new ArrayList<ContactDTO>();
 		
-		 firstName="%"+firstName+"%"; 
-		 lastName="%"+lastName+"%";;
-		
-        log.info("firstName "+firstName);
-        log.info("lastName "+lastName);
-        
+		    
         try{        	
-        	listcontactDTO =(List<ContactDTO>) jdbcTemplate.queryForObject(query, new Object[] { firstName,lastName },
+        	final String query = SQLRepository.GET_CONTACT_BY_FIRST_NAME_AND_LAST_NAME;
+        	//firstName="%"+firstName+"%"; 
+        	//lastName="%"+lastName+"%";		
+        	log.info("firstName "+firstName);
+        	log.info("lastName "+lastName);
+       	
+        	MapSqlParameterSource namedParams= new MapSqlParameterSource();
+        	namedParams.addValue("fName", firstName);
+        	namedParams.addValue("lName", lastName);
+        	
+        	listcontactDTO =(List<ContactDTO>) namedJdbcTemplate.queryForObject(query, namedParams,
                     new RowMapper() {
                         public List<ContactDTO> mapRow(ResultSet resultSet, int rowNum) throws SQLException {
                             List<ContactDTO> tempList = new ArrayList<ContactDTO>(); 
-                            log.info("size is"+tempList.size()); 
+                            log.info("size is :: "+ resultSet.getFetchSize()+" rowNum "+rowNum); 
                         	while(resultSet.next())
                              {
                         		ContactDTO tempDTO = new ContactDTO();
