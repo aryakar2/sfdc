@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.sfdc.contingency.sfdc.dto.ContactDTO;
 import com.sfdc.contingency.sfdc.entity.Contact;
 
 /**
@@ -20,10 +21,10 @@ public interface ContactService {
 	
 	List<Contact> getContactByMemberId(String memberIDC);
 	
-	List<Contact> getContactByName(String firstName,String lastName) throws Exception;
+	List<ContactDTO> getContactByName(String firstName,String lastName) throws Exception;
 
 	List<Contact> getContactByFirstName(String firstName) throws Exception;
 
-	List<Contact> getContactByLastName(String lastName) throws Exception;
+	List<ContactDTO> getContactByLastName(String lastName) throws Exception;
 
 }

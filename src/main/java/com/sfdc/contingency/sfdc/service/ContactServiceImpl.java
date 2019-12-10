@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sfdc.contingency.sfdc.dao.ContactDAO;
+import com.sfdc.contingency.sfdc.dto.ContactDTO;
 import com.sfdc.contingency.sfdc.entity.Contact;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,10 +40,10 @@ public class ContactServiceImpl implements ContactService{
 	
 
 	@Override
-	public List<Contact> getContactByName(String firstName,String lastName) throws Exception{
+	public List<ContactDTO> getContactByName(String firstName,String lastName) throws Exception{
 		// TODO Auto-generated method stub				
-		log.info("firstName"+ firstName);
-		log.info("lastName"+ lastName);
+		log.info("firstName "+ firstName);
+		log.info("lastName "+ lastName);
 		return contactDao.findByFirstNameAndLastName(firstName,lastName);		
 	}
 
@@ -53,7 +54,7 @@ public class ContactServiceImpl implements ContactService{
 	}
 
 	@Override
-	public List<Contact> getContactByLastName(String lastName) throws Exception{
+	public List<ContactDTO> getContactByLastName(String lastName) throws Exception{
 		// TODO Auto-generated method stub
 		return contactDao.findByLastName(lastName);
 	}

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sfdc.contingency.sfdc.dto.ApplicationConstants;
+import com.sfdc.contingency.sfdc.dto.ContactDTO;
 import com.sfdc.contingency.sfdc.dto.Message;
 import com.sfdc.contingency.sfdc.dto.Status;
 import com.sfdc.contingency.sfdc.entity.Contact;
@@ -87,7 +88,7 @@ public class ContactController {
 	public Map<String,Object> getContactListByName(@PathVariable("fName") String fName,@PathVariable("lName") String lName){
 		log.info("Hi !! I am in getContactByFirstNameAndLastName controller");
 		Map<String,Object> map = new HashMap<String,Object>();
-		List<Contact> contactList = new ArrayList<Contact>();
+		List<ContactDTO> contactList = new ArrayList<ContactDTO>();
 		try {
 			contactList=contactService.getContactByName(fName,lName);
 		}catch(Exception e) {
@@ -144,7 +145,7 @@ public class ContactController {
 	public Map<String,Object> getContactByLasttName(@PathVariable("lname") String lastName){
 		log.info("Hi !! I am in getContactByLasttName controller");
 		Map<String,Object> map = new HashMap<String,Object>();
-		List<Contact> contactList = new ArrayList<Contact>();
+		List<ContactDTO> contactList = new ArrayList<ContactDTO>();
 		try {
 			contactList=contactService.getContactByLastName(lastName);
 		}catch(Exception e) {
